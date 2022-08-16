@@ -1,18 +1,45 @@
-const alexMistakesTimeArr = [5, 10, 20, 40, 80, 160, 320, 640, 1280];
-
-const oneKata = 60 / 10;
-
-function alexMistakes(numberOfKata, timeLimit) {
-  //TODO
-  const katasTime = numberOfKata * oneKata;
-  const mistakeTime = timeLimit - katasTime;
-  let sum = 0;
-  for (let i = 0; i <= alexMistakesTimeArr.length; i++) {
-    sum += alexMistakesTimeArr[i];
-
-    if (sum > mistakeTime) {
-      return i;
-    }
-  }
+class Media {
+  record() {}
+  share() {}
 }
-alexMistakes(3, 45);
+
+class Movie extends Media {
+  watch() {}
+}
+
+class Podcast extends Media {
+  listen() {}
+}
+
+class Newsletter {
+  write() {}
+  read() {}
+}
+
+class Snippet extends Resource {
+  gather() {}
+}
+
+// Composition
+const recordable = (state) => ({
+  record: () => `I'm recording a new ${state.type}...🎥`,
+});
+
+const shareble = (state) => ({
+  share: () => `I'm share right now  ${state.name}... 🖕`,
+});
+
+const watchable = (state) => ({
+  watch: () => `Spread a word about ${state.name} 👀`,
+});
+
+const movie = (name) => {
+  const state = { name: name, type: "movie" };
+
+  return Object.assign(
+    {},
+    recordable(state),
+    shareble(state),
+    watchable(state)
+  );
+};
