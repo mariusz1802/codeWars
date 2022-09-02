@@ -1,115 +1,82 @@
-// let url = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=the%20weekend&key=AIzaSyBBUzPFtZAiqnp-4RdAiFfHjBzOWMWJhlE&maxResults=25`;
+//function to get input value
+function getInputValue() {
+  const value = document.getElementById("search").value;
+  return value;
+}
 
-// const getData = async function (url) {
-//   const response = await fetch(url);
-//   let data = await response.json();
-//   return data;
-// };
+const button = document.querySelector("button");
 
-// const videoId = async function (url) {
-//   const responseId = await getData(url);
-//   const VideoId = await responseId.items;
-//   VideoId.forEach((element) => {
-//     const idEl = element.id.videoId;
-//     const newEl = `https://www.youtube.com/watch?v=${idEl}`;
-//     return newEl;
-//   });
-// };
+class DivCreator {
+  constructor(title, description, thumbnail, chanelTitle, videoId) {
+    this.title = title;
+    this.description = description;
+    this.thumbnail = thumbnail;
+    this.chanelTitle = chanelTitle;
+    this.videoId = videoId;
+  }
+  createDiv() {
+    const el = document.createElement("div");
+    el.classList.add("search-box");
+    const title = document.createElement("h2");
+    title.innerHTML = this.title;
+    const description = document.createElement("p");
+    description.innerHTML = this.description;
+    const thumbnail = document.createElement("img");
+    thumbnail.src = this.thumbnail;
+    thumbnail.alt = this.title;
+    el.appendChild(title);
+    el.appendChild(thumbnail);
+    el.appendChild(description);
+    //...kreowanie diva do html
+  }
+}
 
-// const videoTitle = async function (url) {
-//   const responseTitle = await getData(url);
-//   const Title = await responseTitle.items;
-//   Title.forEach((element) => {
-//     const idEl = element.snippet.title;
-//     return idEl;
-//   });
-// };
+function showData() {
+  const showData = clickButton();
+  showData.then((element) => {
+    element.forEach((el) => {
+      const newEl = new DivCreator(
+        el.title,
+        el.description,
+        el.thumbnail,
+        el.chanelTitle,
+        el.videoId
+      );
+      return newEl;
+    });
+  });
+}
 
-// const thumbnails = async function (url) {
-//   const responseThumbnail = await getData(url);
-//   const Thumbnail = await responseThumbnail.items;
-
-//   Thumbnail.forEach((element) => {
-//     const thumbnail = element.snippet.thumbnails.high.url;
-//     return thumbnail;
-//   });
-// };
-
-// const button = document.querySelector('button');
-
-// button.addEventListener('click', () => {
-//   videoId(url);
-//   videoTitle(url);
-//   thumbnails(url);
-
-// });
-
-let url = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=the%20weekend&key=AIzaSyBBUzPFtZAiqnp-4RdAiFfHjBzOWMWJhlE&maxResults=25`;
+const clickButton = function () {
+  const query = getInputValue();
+  let url = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${query}&key=AIzaSyBBUzPFtZAiqnp-4RdAiFfHjBzOWMWJhlE&maxResults=25`;
+  const selectedData = returnSelectedData(url);
+  return selectedData;
+};
 
 const getData = async function (url) {
   const response = await fetch(url);
   let data = await response.json();
-  return data;
+  return data.items;
 };
 
-// const videoId = async function (url) {
-//   const responseId = await getData(url);
-//   const VideoId = await responseId.items;
-//   VideoId.forEach((element) => {
-//     const idEl = element.id.videoId;
-//     const newEl = `https://www.youtube.com/watch?v=${idEl}`;
-//     return newEl;
-//   });
-// };
+const returnSelectedData = async function (url) {
+  const data = await getData(url);
+  const array = [];
+  data.forEach((element) => {
+    const title = element.snippet.title;
+    const description = element.snippet.description;
+    const thumbnail = element.snippet.thumbnails.high.url;
+    const chanelTitle = element.snippet.channelTitle;
+    const videoId = element.id.videoId;
+    const newObj = Object.assign(
+      {},
+      { title, description, thumbnail, chanelTitle, videoId }
+    );
 
-const videoIdAble = (state) => ({
-  videoId: function () {
-    return console.log(`id video to: ${state.videoId}`);
-  },
-});
-
-const titleAble = (state) => ({
-  title: function () {
-    return console.log(`title video : ${state.title}`);
-  },
-});
-const thumbnailAble = (state) => ({
-  thumbnail: function () {
-    return console.log(`thumbnail : ${state.thumbnail}`);
-  },
-});
-
-const searchResult = async (name, videoId, title, thumbnail) => {
-  const Data = await getData(url);
-  const Items = await Data.items; //Array of Objects
-
-  Items.forEach((element) => {
-    console.log(element);
+    array.push(newObj);
   });
-
-  const state = {
-    name: name,
-    videoId: videoId,
-    title: title,
-    thumbnail: thumbnail,
-  };
-
-  return Object.assign(
-    {},
-    videoIdAble(state),
-    titleAble(state),
-    thumbnailAble(state)
-  );
+  return array;
 };
 
-const newVideo = searchResult('MojeVideo', '1234', 'Blade', 'picturethumbnail');
-
-newVideo.videoId();
-
-const button = document.querySelector('button');
-
-button.addEventListener('click', () => {
-  videoId(url);
-  videoTitle(url);
-  thumbnails(url);
-});
+button.addEventListener("click", showData);
