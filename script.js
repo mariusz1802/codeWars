@@ -46,22 +46,6 @@ class DivCreator {
   }
 }
 
-class TitleCreator {
-  constructor(title) {
-    this.title = title;
-  }
-  showTitle() {
-    const el = document.createElement("div");
-    el.classList.add("search-box");
-    const title = document.createElement("h2");
-    title.innerHTML = this.title;
-    el.appendChild(title);
-  }
-}
-
-const newTitle = new TitleCreator("Manio");
-newTitle.showTitle();
-
 function showData() {
   const showData = neededData();
   showData.then((element) => {
