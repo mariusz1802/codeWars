@@ -1,4 +1,5 @@
 const input = document.getElementById("search");
+const searchContent = document.querySelector(".searchContent");
 
 //function to get input value
 function getInputValue() {
@@ -38,7 +39,8 @@ class DivCreator {
 
     //Add elements to body
     a.appendChild(el);
-    document.body.appendChild(a);
+    console.log(searchContent);
+    searchContent.appendChild(a);
     el.appendChild(title);
     el.appendChild(thumbnail);
     el.appendChild(description);
@@ -47,6 +49,8 @@ class DivCreator {
 }
 
 function showData() {
+  let child = searchContent.lastElementChild;
+  while (child) {}
   const showData = neededData();
   showData.then((element) => {
     element.forEach((el) => {
