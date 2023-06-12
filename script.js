@@ -49,8 +49,7 @@ class DivCreator {
 }
 
 function showData() {
-  let child = searchContent.lastElementChild;
-  while (child) {}
+  searchContent.innerHTML = '';
   const showData = neededData();
   showData.then((element) => {
     element.forEach((el) => {
@@ -105,3 +104,5 @@ input.addEventListener("keypress", function (event) {
     showData();
   }
 });
+
+
