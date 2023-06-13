@@ -5,11 +5,12 @@ function nextHigher(n) {
 }
 
 function findNextNumber(n) {
-  const nextNumber = ++n;
-  const binaryRepresentation = nextNumber.toString(2);
-  const howManyBits = bitsCounter(binaryRepresentation);
-  const fun = nextHigher(n);
-  console.log(fun.bitsOne);
+  const baseBitsNumber = howManyBits(n);
+
+  do {
+    var nextBitsNumber = howManyBits(++n);
+    console.log(nextBitsNumber);
+  } while (baseBitsNumber === nextBitsNumber);
 }
 
 function howManyBits(n) {
